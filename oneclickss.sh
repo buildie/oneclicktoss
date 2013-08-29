@@ -1,9 +1,9 @@
 #!/bin/bash
 # Script function : One click to install shadowscoks.
-# Script version : 1.0
-# Author : yoo@yoo.hk
-# Made : 2013.08.27
-# Support : Only CentOS 6.0+
+# Original author : yoo@yoo.hk
+# Tested on Ubuntu 12.04 64bit
+
+
 
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 LANG=C
@@ -11,68 +11,57 @@ LANG=C
 export PATH
 export LANG
 
-if [ $1 = "uninstall" ] >> installss.log 2>&1 ;
-then
-echo "Uninstall all node and shadowsocks"
-rm -rf ./node* ./shadowsocks* >> installss.log 2>&1
-sed -i '/ssserver/d' /etc/rc.d/rc.local >> installss.log 2>&1
-kill -9 $(ps -ef | grep ssserver | awk '{print $2}' | head -n 1) >> installss.log 2>&1
-rm -rf ./installss.log
-echo "Uninstall success"
-exit 0
-fi
-
 SERVERPORT=$1
-LOCALPORT=$2
-PASSWORD=$3
+PASSWORD=$2
 
-echo "Stop iptables service"
-service iptables stop >> installss.log 2>&1
-
-if [ $# -ne 3 ];
-then
-echo "You do not enter your setting like => sh oneclickss.sh serverport localport password"
-SERVERPORT=8989
-LOCALPORT=1999
-PASSWORD="yoofuckgfw"
-echo "Your setting is default"
+if [ $# -ne 2 ];then
+echo "using default settings"
+SERVERPORT=1885
+PASSWORD="v2ex"
 fi
 
-yum -y install wget unzip >> installss.log 2>&1
-echo "Install environment success"
 
-wget https://raw.github.com/kellyschurz/oneclicktoss/master/node-v0.10.17-linux-x86.tar.gz >> installss.log 2>&1
-wget https://raw.github.com/kellyschurz/oneclicktoss/master/shadowsocks-nodejs-master.zip >> installss.log 2>&1
-echo "Download nodejs and shadowsocks success"
+command -v unzip 2>&1 >/dev/null || sudo apt-get install -y unzip 2>installss.log || echo "Need Root!!"
 
-tar -zxvf node-v0.10.17-linux-x86.tar.gz >> installss.log 2>&1
-unzip shadowsocks-nodejs-master.zip >> installss.log 2>&1
-echo "Tar and unzip success"
 
-rm -rf shadowsocks-nodejs-master.zip node-v0.10.17-linux-x86.tar.gz >> installss.log 2>&1
-echo "Remove all the tar success"
+if $(uname -m | grep 64 2>&1 >/dev/null); then
+  echo "64bit system"
+  wget http://nodejs.org/dist/v0.10.17/node-v0.10.17-linux-x64.tar.gz
+else
+  echo "32bit system"
+  wget http://nodejs.org/dist/v0.10.17/node-v0.10.17-linux-x32.tar.gz
+fi
+  
+wget https://raw.github.com/kellyschurz/oneclicktoss/master/shadowsocks-nodejs-master.zip 
 
-mv node-v0.10.17-linux-x86 node >> installss.log 2>&1
-mv shadowsocks-nodejs-master shadowsocks >> installss.log 2>&1
-echo "Rename to node and shadowsocks success"
+echo "uncompressing..."
+tar -zxvf node-v0.10.17-linux-x??.tar.gz 1>/dev/null 2>>installss.log
+unzip shadowsocks-nodejs-master.zip 1>/dev/null 2>>installss.log
 
-CONFIGPATH=$(pwd)/shadowsocks/config.json
-echo "Your config path is $CONFIGPATH"
+echo "cleaning..."
+rm -rf shadowsocks-nodejs-master.zip node-v0.10.17-linux-x??.tar.gz 2>>installss.log
 
-SERVERIP=$(ifconfig | grep "inet addr" | awk '{print $2}'| cut -d ':' -f 2 | grep -v 127.0.0.1 | head -n 1)
-sed "s/127\.0\.0\.1/$SERVERIP/g" -i $CONFIGPATH
-echo "Your server ip is $SERVERIP"
+mv node-v0.10.17-linux-x?? node  2>>installss.log
+mv shadowsocks-nodejs-master shadowsocks  2>>installss.log
 
-sed "s/8388/$SERVERPORT/g" -i $CONFIGPATH
+CONFIGFILE=$(pwd)/shadowsocks/config.json
+echo "Your config file path is $CONFIGFILE"
+
+SERVERIP="0.0.0.0"
+sed "s/127\.0\.0\.1/$SERVERIP/" -i $CONFIGFILE
+
+
+sed "s/8388/$SERVERPORT/" -i $CONFIGFILE
 echo "Your server port is $SERVERPORT"
 
-sed "s/1080/$LOCALPORT/g" -i $CONFIGPATH
-echo "Your proxy port is $LOCALPORT"
+sed "s/barfoo\!/$PASSWORD/" -i $CONFIGFILE
+echo "Your password is $PASSWORD"
 
-sed "s/barfoo\!/$PASSWORD/g" -i $CONFIGPATH
-echo "Your encryption method AES-256-CFB password is $PASSWORD"
 
-echo "$(pwd)/node/bin/node $(pwd)/shadowsocks/bin/ssserver > /dev/null 2>&1 &" >> /etc/rc.d/rc.local
-source /etc/rc.d/rc.local
+RUNSS="$(pwd)/node/bin/node $(pwd)/shadowsocks/bin/ssserver > /dev/null 2>&1 &"
 
-echo "End success"
+sudo sed  "/^exit/i $RUNSS" -i /etc/rc.local
+
+sudo /etc/rc.local
+
+echo "DONE"
