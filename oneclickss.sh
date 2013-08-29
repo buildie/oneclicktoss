@@ -16,8 +16,8 @@ PASSWORD=$2
 
 if [ $# -ne 2 ];then
 echo "using default settings"
-SERVERPORT=1885
-PASSWORD="v2ex"
+SERVERPORT=2000
+PASSWORD="Philosophy"
 fi
 
 
