@@ -4,4 +4,4 @@ Tested on Ubuntu 12.04
 
 WARNING:
 Forked for my own conveniences.
-Not elegant at the slightest.
+Not elegant in the slightest.
