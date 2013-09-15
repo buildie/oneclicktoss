@@ -75,9 +75,9 @@ interactive()
 		fi
 	done
 
-
+	
 	echo "select method:"
-	select method in "aes-256-cfb" "aes-192-cfb" "aes-128-cfb" "bf-cfb" "camellia-256-cfb" "camellia-192-cfb" "camellia-128-cfb" "cast5-cfb" "cast5-cfb" "idea-cfb" "rc2-cfb" "rc4" "seed-cfb" "table" method
+	select method in "aes-256-cfb" "aes-192-cfb" "aes-128-cfb" "bf-cfb" "camellia-256-cfb" "camellia-192-cfb" "camellia-128-cfb" "cast5-cfb" "cast5-cfb" "idea-cfb" "rc2-cfb" "rc4" "seed-cfb" "table"; do
 		break;
 	done
 
