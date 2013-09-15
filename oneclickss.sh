@@ -11,14 +11,6 @@ LANG=C
 export PATH
 export LANG
 
-help()
-{
-	cat << -HELP 
-	
-HELP
-	exit 0
-}
-
 
 default()
 {
@@ -116,7 +108,7 @@ done
 echo "You have selected $var"
 
 case "$var" in
-	"Default settings")	default;;
+	"Default settings")		default;;
 	"Manually")			interactive;;
 	"Nothing") 			exit 0;;
 esac
