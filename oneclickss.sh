@@ -35,13 +35,13 @@ fi
 wget https://github.com/clowwindy/shadowsocks-nodejs/archive/master.zip
 
 echo "uncompressing..."
-tar -zxvf node-v*-linux-x??.tar.gz 1>/dev/null 2>>installss.log
+tar -zxvf node-v0.10.22-linux-x??.tar.gz 1>/dev/null 2>>installss.log
 unzip shadowsocks-nodejs-master.zip 1>/dev/null 2>>installss.log
 
 echo "cleaning..."
-rm -rf shadowsocks-nodejs-master.zip node-v*-linux-x??.tar.gz 2>>installss.log
+rm -rf shadowsocks-nodejs-master.zip  node-v0.10.22-linux-x??.tar.gz 2>>installss.log
 
-mv node-v*-linux-x?? node  2>>installss.log
+mv  node-v0.10.22-linux-x??.tar.gz node  2>>installss.log
 mv shadowsocks-nodejs-master shadowsocks  2>>installss.log
 
 CONFIGFILE=$(pwd)/shadowsocks/config.json
