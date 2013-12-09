@@ -39,10 +39,10 @@ node_zip=$(ls | grep node-v*-linux-x??.tar.gz)
 
 echo "uncompressing..."
 tar -zxvf $node_zip 1>/dev/null 2>>installss.log
-unzip shadowsocks-nodejs-master.zip 1>/dev/null 2>>installss.log
+unzip master.zip 1>/dev/null 2>>installss.log
 
 echo "cleaning..."
-rm -rf shadowsocks-nodejs-master.zip  node_zip 2>>installss.log
+rm -rf master.zip  $node_zip 2>>installss.log
 
 mv  node-v0.10.22-linux-x86 node  2>>installss.log || mv  node-v0.10.22-linux-x64 node  2>>installss.log
 mv shadowsocks-nodejs-master shadowsocks  2>>installss.log
