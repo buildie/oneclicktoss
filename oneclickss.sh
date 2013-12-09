@@ -26,22 +26,22 @@ command -v unzip 2>&1 >/dev/null || sudo apt-get install -y unzip 2>installss.lo
 
 if $(uname -m | grep 64 2>&1 >/dev/null); then
   echo "64bit system"
-  wget http://nodejs.org/dist/v0.10.17/node-v0.10.17-linux-x64.tar.gz
+  wget http://nodejs.org/dist/v0.10.22/node-v0.10.22-linux-x64.tar.gz
 else
   echo "32bit system"
-  wget http://nodejs.org/dist/v0.10.17/node-v0.10.17-linux-x32.tar.gz
+  wget http://nodejs.org/dist/v0.10.22/node-v0.10.22-linux-x32.tar.gz
 fi
   
-wget https://raw.github.com/kellyschurz/oneclicktoss/master/shadowsocks-nodejs-master.zip 
+wget https://github.com/clowwindy/shadowsocks-nodejs/archive/master.zip
 
 echo "uncompressing..."
-tar -zxvf node-v0.10.17-linux-x??.tar.gz 1>/dev/null 2>>installss.log
+tar -zxvf node-v*-linux-x??.tar.gz 1>/dev/null 2>>installss.log
 unzip shadowsocks-nodejs-master.zip 1>/dev/null 2>>installss.log
 
 echo "cleaning..."
-rm -rf shadowsocks-nodejs-master.zip node-v0.10.17-linux-x??.tar.gz 2>>installss.log
+rm -rf shadowsocks-nodejs-master.zip node-v*-linux-x??.tar.gz 2>>installss.log
 
-mv node-v0.10.17-linux-x?? node  2>>installss.log
+mv node-v*-linux-x?? node  2>>installss.log
 mv shadowsocks-nodejs-master shadowsocks  2>>installss.log
 
 CONFIGFILE=$(pwd)/shadowsocks/config.json
