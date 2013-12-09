@@ -29,7 +29,7 @@ if $(uname -m | grep 64 2>&1 >/dev/null); then
   wget http://nodejs.org/dist/v0.10.22/node-v0.10.22-linux-x64.tar.gz
 else
   echo "32bit system"
-  wget http://nodejs.org/dist/v0.10.22/node-v0.10.22-linux-x32.tar.gz
+  wget http://nodejs.org/dist/v0.10.22/node-v0.10.22-linux-x86.tar.gz
 fi
   
 wget https://github.com/clowwindy/shadowsocks-nodejs/archive/master.zip
